@@ -1,0 +1,150 @@
+body {
+    background-color: #45433f;
+    font-family: 'Helvetica', sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #45433f;
+}
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #45433f;
+}
+.register-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #45433f;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #f8f8f8;
+  padding: 60px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.form-title {
+  font-size: 36px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.form-subtitle {
+  font-size: 16px;
+  margin-bottom: 40px;
+  width: 400px;
+  text-align: center;
+  font-weight: 300;
+}
+.logo {
+  width: 400px;
+  margin-bottom: 40px;
+  border-radius: 5px;
+}
+
+.input-box {
+  width: 400px;
+  height: 40px;
+  margin-bottom: 20px;
+}
+.form-input {
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  width: 400px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 10px;
+  border-bottom: 2px solid #74d6dd;
+}
+.form-label-inline {
+  margin-bottom: 20px;
+}
+.form-checkbox {
+  margin-bottom: 20px;
+}
+.form-button {
+  width: 400px;
+  height: 40px;
+  background-color: #f84b38;
+  border: none;
+  border-radius: 5px;
+  color: #f8f8f8;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100vh;
+  background-color: #45433f;
+}
+
+.content-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content:center;
+  align-items: center;
+  background-color: #45433f;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.welcome-container {
+  width: 100%;
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-image:
+    url("/static/images/sbd-progress-tracker-logo-wide.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  color: #f8f8f8;
+}
+.welcome-header{
+  font-size: 80px;
+  text-shadow: #45433f 4px 8px; 
+  text-align: center;
+
+}
+.welcome-paragraph {
+  font-size: 20px;
+  text-align: center;
+  font-weight: 800;
+  text-shadow: #45433f 4px 4px;
+}
+.logout-container {
+  display: flex;
+  justify-content:right;
+  align-items: center;
+  width: 100%;
+  height: 40px;
+  margin-inline-end: 40px;
+}
+.logout-button {
+  background-color: #f84b38;
+  border: none;
+  border-radius: 5px;
+  color: #f8f8f8;
+  font-size: 14x;
+  cursor: pointer;
+  padding: 10px 20px;
+}
+

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css')}}">
+</head>
+<body>
+  <div class="container">
+    <div class="content-container">
+      <div class="welcome-container">
+        <div class="logout-container">
+          <a href="{{ url_for('logout') }}" class="logout-button">Sign Out</a>
+        </div>
+        <h1 class="welcome-header">Welcome to SBD Progress Tracker</h1>
+        <p class="welcome-paragraph">Our goal is to provide a place to log your SBD sets, visualize your E1RM over time, and monitor your personal bests!</p>
+      </div>
+      <div class="log-workout-container">
+        <h2 class="log-workout-header">Log a workout</h2>
+        <div class="log-workout-form">
+          <form method="POST">
+            {{ form.hidden_tag() }}
+            <div class="log-workout-input-box">
+              {{ form.exercise(class="form-input select-input", placeholder="Select an exercise...") }}
+            </div>
+            <div class="log-workout-input-box">
+              {{ form.reps(class="form-input select-input", placeholder="Select # of reps") }}
+            </div>
+            <div class="log-workout-input-box">
+              {{ form.weight(class="form-input", placeholder="Enter weight in lbs") }}
+            </div>
+            <div class="log-workout-input-box"></div>
+              {{ form.rpe(class="form-input select-input", placeholder="Select an RPE") }}
+            </div>
+            <div class="log-workout-input-box">
+              {{ form.submit(class="form-button") }}
+            </div>
+
+          </form>
+        </div>
+
+
+      </div>
+
+    </div>
+  </div>
+  
+</body>
+</html>

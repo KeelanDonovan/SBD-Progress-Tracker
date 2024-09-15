@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css')}}">
+</head>
+<body>
+
+  <div class="login-container">
+
+      <div class="form-container">
+
+        <h1 class="form-title">Login to your account</h1>
+
+        <div class="logo-container">
+          <img src="{{ url_for('static', filename='images/sbd-progress-tracker-logo-wide.png')}}" alt="logo" class="logo">
+        </div>
+
+        <form method="POST">
+          {{ form.hidden_tag() }}
+          <div class="input-box">
+            {{ form.email(class="form-input", placeholder="Email") }}
+          </div>
+          <div class="input-box">
+            {{ form.password(class="form-input", placeholder="Password") }}
+          </div>
+          <div class="input-box">
+            {{ form.remember.label(class = "form-label-inline") }}
+            {{ form.remember(class="form-checkbox")}}
+          </div>
+          <div class="input-box">
+            {{ form.submit(class="form-button")}}
+          </div>
+        </form>
+
+        <div class="input-box">
+          <a href="{{ url_for('register') }}">Don't have an account? Click here to register.</a>
+        </div>
+
+      </div>
+
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create an Account</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css')}}">
+</head>
+<body>
+  <div class="register-container">
+    <div class="form-container">
+      <h1 class="form-title">Create an Account</h1>
+      <div class="logo-container">
+        <img src="{{ url_for('static', filename='images/sbd-progress-tracker-logo-wide.png')}}" alt="logo" class="logo">
+      </div>
+      <h2 class="form-subtitle">SBD Progress tracker is the place to log your SBD sets, visualize you E1RM over time, and monitor your personal bests!</h2>
+
+      <form method="POST">
+        {{ form.hidden_tag() }}
+        <div class="input-box">
+          {{ form.username(class="form-input", placeholder = "Username") }}
+        </div>
+        <div class="input-box">
+          {{ form.email(class="form-input", placeholder = "Email") }}
+        </div>
+        <div class="input-box">
+          {{ form.password(class="form-input", placeholder = "Password") }}
+        </div>
+        <div class="input-box">
+          {{ form.confirm_password(class="form-input", placeholder = "Confirm Password") }}
+        </div>
+        <div class="input-box">
+          {{ form.submit(class = "form-button" ) }}
+        </div>
+      </form>
+      <div class="input-box">
+        <a href="login">Have an Account? Login here.</a>
+      </div>
+      
+    </div>
+  </div>
+</body>
+</html>
