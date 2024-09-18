@@ -24,7 +24,7 @@ class LogForm(FlaskForm):
   exercise = SelectField('Exercise', validators=[DataRequired()], choices=[('Squat', 'Squat'), ('Bench Press', 'Bench Press'), ('Deadlift', 'Deadlift')], default='Choose Exercise')
   sets = SelectField('Sets', validators=[DataRequired()], coerce=int, choices=[('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'), ('5', '5'), ('6', '6')], default='Choose Sets')
   reps = SelectField('Reps', validators=[DataRequired()], coerce=int, choices=[('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'), ('5', '5'), ('6', '6'), ('7', '7'), ('8', '8'), ('9', '9'), ('10', '10'), ('11', '11'), ('12', '12')])
-  weight = DecimalField('Weight', validators=[DataRequired()], places=2)
+  weight = DecimalField('Load (lbs)', validators=[DataRequired()], places=2)
   rpe = SelectField('RPE', validators=[DataRequired()], coerce=float, choices=[('4', '4'), ('4.5', '4.5'), ('5', '5'), ('5.5', '5.5'), ('6', '6'), ('6.5', '6.5'), ('7', '7'), ('7.5', '7.5'), ('8', '8'), ('8.5', '8.5'), ('9', '9'), ('9.5', '9.5'), ('10', '10')])
   submit = SubmitField('Log Workout')
 
