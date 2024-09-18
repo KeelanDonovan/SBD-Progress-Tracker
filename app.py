@@ -60,7 +60,7 @@ def logout():
 def index():
   form = LogForm()
   if form.validate_on_submit():
-    log = Log(exercise = form.exercise.data, reps = form.reps.data, weight = form.weight.data, rpe = form.rpe.data, user_id = current_user.id)
+    log = Log(exercise = form.exercise.data, sets = form.sets.data, reps = form.reps.data, weight = form.weight.data, rpe = form.rpe.data, user_id = current_user.id)
     db.session.add(log)
     db.session.commit()
     flash('Workout logged successfully', 'success')

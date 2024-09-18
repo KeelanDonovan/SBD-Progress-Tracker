@@ -18,6 +18,7 @@ class User(db.Model, UserMixin):
 class Log(db.Model):
   id = db.Column(db.Integer, primary_key=True)
   exercise = db.Column(db.String(100), nullable=False)
+  sets = db.Column(db.Integer, nullable=False)
   reps = db.Column(db.Integer, nullable=False)
   weight = db.Column(db.Double, nullable=False)
   rpe = db.Column(db.Double, nullable=False)
