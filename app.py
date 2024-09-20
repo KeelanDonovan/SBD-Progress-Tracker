@@ -60,7 +60,7 @@ def logout():
 def index():
   form = LogForm()
   if form.validate_on_submit():
-    log = Log(exercise = form.exercise.data, sets = form.sets.data, reps = form.reps.data, weight = form.weight.data, rpe = form.rpe.data, user_id = current_user.id)
+    log = Log(exercise = form.exercise.data, sets = form.sets.data, reps = form.reps.data, weight = form.weight.data, rpe = form.rpe.data, e1rm = calculate_e1rm(form.weight.data, form.reps.data, form.rpe.data),  user_id = current_user.id)
     db.session.add(log)
     db.session.commit()
     flash('Workout logged successfully', 'success')
@@ -71,6 +71,25 @@ def index():
 def load_user(user_id):
   return User.query.get(int(user_id))
 
+def calculate_e1rm(weight, reps, rpe):
+  if rpe < 6.5 or rpe > 10:
+    return None
+  rpe_chart = {
+    1: {10.0: 100.0, 9.5: 97.8, 9.0: 95.5, 8.5: 93.9, 8.0: 92.2, 7.5: 90.7, 7.0: 89.2, 6.5: 87.8},
+    2: {10.0: 95.5, 9.5: 93.9, 9.0: 92.2, 8.5: 90.7, 8.0: 89.6, 7.5: 87.8, 7.0: 86.3, 6.5: 85.0},
+    3: {10.0: 92.2, 9.5: 90.7, 9.0: 89.6, 8.5: 87.8, 8.0: 86.3, 7.5: 85.0, 7.0: 83.7, 6.5: 82.4},
+    4: {10.0: 89.2, 9.5: 87.8, 9.0: 86.3, 8.5: 85.0, 8.0: 83.7, 7.5: 82.4, 7.0: 81.1, 6.5: 79.9},
+    5: {10.0: 86.3, 9.5: 85.0, 9.0: 83.7, 8.5: 82.4, 8.0: 81.1, 7.5: 79.9, 7.0: 78.6, 6.5: 77.4},
+    6: {10.0: 83.7, 9.5: 82.4, 9.0: 81.1, 8.5: 79.9, 8.0: 78.6, 7.5: 77.4, 7.0: 76.2, 6.5: 75.1},
+    7: {10.0: 81.1, 9.5: 79.9, 9.0: 78.6, 8.5: 77.4, 8.0: 76.2, 7.5: 74.9, 7.0: 73.9, 6.5: 72.3},
+    8: {10.0: 78.6, 9.5: 77.4, 9.0: 76.2, 8.5: 75.1, 8.0: 73.9, 7.5: 72.3, 7.0: 70.7, 6.5: 69.4},
+    9: {10.0: 76.2, 9.5: 75.1, 9.0: 73.9, 8.5: 72.3, 8.0: 70.7, 7.5: 69.4, 7.0: 68.0, 6.5: 66.7},
+    10: {10.0: 73.9, 9.5: 72.3, 9.0: 70.7, 8.5: 69.4, 8.0: 68.0, 7.5: 66.7, 7.0: 65.3, 6.5: 64.0}
+    } #Nested Dictionary, rpe_chart[reps][rpe] = percentage of 1RM
+
+  percentage = rpe_chart[reps][rpe]
+  e1rm = weight / (percentage / 100.0)
+  return round(e1rm, 2)
 
 if __name__ == '__main__':
   app.run(debug=True)
