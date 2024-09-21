@@ -21,33 +21,39 @@ login_manager.login_message_category = 'info'
 def register():
   form = RegistrationForm()
   if form.validate_on_submit():
-    print('Form validated')
-
     existing_user = User.query.filter((User.email == form.email.data) | (User.username == form.username.data)).first()
+
     if existing_user:
       flash('An account with that email or username already exists', 'danger')
       return redirect(url_for('register'))
 
     hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
     user = User(username=form.username.data, email=form.email.data, password=hashed_password)
+    
     db.session.add(user)
+    
     db.session.commit()
     flash('Your account has been created! You can now log in', 'success')
     return redirect(url_for('login'))
+  
   return render_template('register.html', title='Create an Account', form=form)
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
   if current_user.is_authenticated:
     return redirect(url_for('index'))
+  
   form = LoginForm()
+  
   if form.validate_on_submit():
     user = User.query.filter_by(email = form.email.data).first()
+    
     if user and bcrypt.check_password_hash(user.password, form.password.data):
       login_user(user, remember = form.remember.data)
       return redirect(url_for('index'))
     else:
       flash('Login failed. Please check email and password', 'danger')
+  
   return render_template('login.html', title='Login', form = form)
 
 @app.route("/logout")
@@ -59,13 +65,21 @@ def logout():
 @login_required
 def index():
   form = LogForm()
+
   if form.validate_on_submit():
     log = Log(exercise = form.exercise.data, sets = form.sets.data, reps = form.reps.data, weight = form.weight.data, rpe = form.rpe.data, e1rm = calculate_e1rm(form.weight.data, form.reps.data, form.rpe.data),  user_id = current_user.id)
+
     db.session.add(log)
     db.session.commit()
+
     flash('Workout logged successfully', 'success')
     return redirect(url_for('index'))
-  return render_template("index.html", form=form)
+  
+  squat_logs = Log.query.filter_by(exercise='Squat', user_id=current_user.id).order_by(Log.date_logged.desc()).all()
+  bench_logs = Log.query.filter_by(exercise='Bench Press', user_id=current_user.id).order_by(Log.date_logged.desc()).all()
+  deadlift_logs = Log.query.filter_by(exercise='Deadlift', user_id=current_user.id).order_by(Log.date_logged.desc()).all()
+
+  return render_template("index.html", form=form, squat_logs=squat_logs, bench_logs=bench_logs, deadlift_logs=deadlift_logs)
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -74,6 +88,7 @@ def load_user(user_id):
 def calculate_e1rm(weight, reps, rpe):
   if rpe < 6.5 or rpe > 10:
     return None
+  
   rpe_chart = {
     1: {10.0: 100.0, 9.5: 97.8, 9.0: 95.5, 8.5: 93.9, 8.0: 92.2, 7.5: 90.7, 7.0: 89.2, 6.5: 87.8},
     2: {10.0: 95.5, 9.5: 93.9, 9.0: 92.2, 8.5: 90.7, 8.0: 89.6, 7.5: 87.8, 7.0: 86.3, 6.5: 85.0},
@@ -89,7 +104,9 @@ def calculate_e1rm(weight, reps, rpe):
 
   percentage = rpe_chart[reps][rpe]
   e1rm = weight / (percentage / 100.0)
-  return round(e1rm, 2)
+  round_e1rm = round(e1rm, 2)
+
+  return round_e1rm
 
 if __name__ == '__main__':
   app.run(debug=True)

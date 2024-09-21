@@ -55,15 +55,105 @@
             {{form.rpe.label(class="log-workout-form-label")}}
             {{ form.rpe(class="log-workout-form-input select-input") }}
           </div>
-          <div class="log-workout-input-box">
+          <div class="log-workout-input-box log-workout-submit">
             {{ form.submit(class="log-workout-form-button") }}
           </div>
         </form>
       </div>
 
-    </div>
+      <div class="log-tables-container">
+        <h2 class="log-tables-header">Your Workout Logs</h2>
+        <div class="log-table-section">
+          <h3 class="log-table-title">Squat Logs</h3>
+          <div class="log-table-scrollable">
+            <table class="log-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Sets</th>
+                  <th>Reps</th>
+                  <th>Weight(lbs)</th>
+                  <th>RPE</th>
+                  <th>E1RM</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for log in squat_logs %}
+                <tr>
+                  <td>{{ log.date_logged.strftime('%m-%d-%Y') }}</td>
+                  <td>{{ log.sets }}</td>
+                  <td>{{ log.reps }}</td>
+                  <td>{{ log.weight }}</td>
+                  <td>{{ log.rpe }}</td>
+                  <td>{{ log.e1rm }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
 
-  </div>
+        </div>
+        <div class="log-table-section">
+          <h3 class="log-table-title">Bench Press Logs</h3>
+          <div class="log-table-scrollable">
+            <table class="log-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Sets</th>
+                  <th>Reps</th>
+                  <th>Weight(lbs)</th>
+                  <th>RPE</th>
+                  <th>E1RM</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for log in bench_logs %}
+                <tr>
+                  <td>{{ log.date_logged.strftime('%m-%d-%Y') }}</td>
+                  <td>{{ log.sets }}</td>
+                  <td>{{ log.reps }}</td>
+                  <td>{{ log.weight }}</td>
+                  <td>{{ log.rpe }}</td>
+                  <td>{{ log.e1rm }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="log-table-section">
+          <h3 class="log-table-title">Deadlift Logs</h3>
+          <div class="log-table-scrollable">
+            <table class="log-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Sets</th>
+                  <th>Reps</th>
+                  <th>Weight(lbs)</th>
+                  <th>RPE</th>
+                  <th>E1RM</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for log in deadlift_logs %}
+                <tr>
+                  <td>{{ log.date_logged.strftime('%m-%d-%Y') }}</td>
+                  <td>{{ log.sets }}</td>
+                  <td>{{ log.reps }}</td>
+                  <td>{{ log.weight }}</td>
+                  <td>{{ log.rpe }}</td>
+                  <td>{{ log.e1rm }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+
+      </div>
 
 </body>
 
