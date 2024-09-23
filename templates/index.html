@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Home</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css')}}">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 </head>
 
 <body>
@@ -151,6 +152,123 @@
             </table>
           </div>
 
+        </div>
+
+      </div>
+
+      <div class="e1rm-chart-container">
+        <h2 class="e1rm-chart-header">E1RM Progress</h2>
+        <div class="chart-container">
+          <canvas id="e1rm-chart"></canvas>
+          <script>
+            var ctx = document.getElementById('e1rm-chart').getContext('2d');
+
+            var squat_values = {{ squat_values | safe }};
+            var bench_values = {{ bench_values | safe }};
+            var deadlift_values = {{ deadlift_values | safe }};
+            squat_values = squat_values.map(value => value === 0 ? null : value);
+            bench_values = bench_values.map(value => value === 0 ? null : value);
+            deadlift_values = deadlift_values.map(value => value === 0 ? null : value);
+
+            var e1rmChart = new Chart(ctx, {
+              type: 'line',
+              data: 
+              {
+                labels: {{ all_dates | safe }},
+                datasets: 
+                [
+                  {
+                    label: 'Squat E1RM',
+                    data: squat_values,
+                    borderColor: 'rgb(255, 99, 132)',
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    tension: 0.1,
+                    pointRadius: 5,
+                    pointHoverRadius: 8,
+                    spanGaps: true,
+                  }, 
+                  {
+                    label: 'Bench Press E1RM',
+                    data: bench_values,
+                    borderColor: 'rgb(54, 162, 235)',
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    tension: 0.1,
+                    pointRadius: 5,
+                    pointHoverRadius: 8,
+                    spanGaps: true,
+                  }, 
+                  {
+                    label: 'Deadlift E1RM',
+                    data: deadlift_values,
+                    borderColor: 'rgb(75, 192, 192)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    tension: 0.1,
+                    pointRadius: 5,
+                    pointHoverRadius: 8,
+                    spanGaps: true,
+                  }
+                ]
+              },
+              options: 
+              {
+                scales: 
+                {
+                  y: 
+                  {
+                    min: 0,
+                    ticks: 
+                    {
+                      color: '#45433f',
+                    },
+                    grid: 
+                    {
+                      color: '#555',
+                    }
+                  },
+                  x: 
+                  {
+                    ticks: 
+                    {
+                      color: '#45433f',
+                    },
+                    grid: 
+                    {
+                      color: '#555',
+                    }
+                  }
+                },
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: 
+                {
+                  legend: 
+                  {
+                    labels: 
+                    {
+                      color: '#45433f',
+                      font: 
+                      {
+                        size: 14,
+                      }
+                    }
+                  },
+                },
+                tooltips: 
+                {
+                  backgroundColor: '#f8f8f8',
+                  titleColor: '#45433f',
+                  bodyColor: '#45433f',
+                  cornerRadius: 5,
+                  padding: 10,
+                },
+                animation: 
+                {
+                  duration: 1000,
+                  easing: 'easeInOutQuart'
+                },
+              }
+            });
+          </script>
         </div>
 
       </div>

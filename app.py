@@ -5,6 +5,8 @@ from flask_login import LoginManager, UserMixin, login_user, logout_user, login_
 from datetime import datetime
 from models import db, User, Log
 from forms import RegistrationForm, LoginForm, LogForm
+from collections import defaultdict
+import math
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your_secret_key'
@@ -74,12 +76,50 @@ def index():
 
     flash('Workout logged successfully', 'success')
     return redirect(url_for('index'))
-  
+
   squat_logs = Log.query.filter_by(exercise='Squat', user_id=current_user.id).order_by(Log.date_logged.desc()).all()
   bench_logs = Log.query.filter_by(exercise='Bench Press', user_id=current_user.id).order_by(Log.date_logged.desc()).all()
   deadlift_logs = Log.query.filter_by(exercise='Deadlift', user_id=current_user.id).order_by(Log.date_logged.desc()).all()
 
-  return render_template("index.html", form=form, squat_logs=squat_logs, bench_logs=bench_logs, deadlift_logs=deadlift_logs)
+  #Get data for e1rm chart
+  #Y-axis: Weight, X-axis: Date
+  #Each data point: Date, E1RM, Reps, RPE
+  valid_squat_logs = [log for log in squat_logs if log.e1rm is not None]
+  valid_bench_logs = [log for log in bench_logs if log.e1rm is not None]
+  valid_deadlift_logs = [log for log in deadlift_logs if log.e1rm is not None]
+
+  squat_data = defaultdict(lambda: 0)
+  bench_data = defaultdict(lambda: 0)
+  deadlift_data = defaultdict(lambda: 0)
+
+  for log in valid_squat_logs:
+    date = log.date_logged.strftime('%m-%d-%Y')
+    if log.e1rm > squat_data[date]:
+        squat_data[date] = log.e1rm
+
+  for log in valid_bench_logs:
+    date = log.date_logged.strftime('%m-%d-%Y')
+    if log.e1rm > bench_data[date]:
+        bench_data[date] = log.e1rm
+  
+  for log in valid_deadlift_logs:
+    date = log.date_logged.strftime('%m-%d-%Y')
+    if log.e1rm > deadlift_data[date]:
+        deadlift_data[date] = log.e1rm
+
+  all_dates = sorted(set(squat_data.keys()).union(bench_data.keys()).union(deadlift_data.keys()))
+  squat_values = [squat_data[date] for date in all_dates]
+  bench_values = [bench_data[date] for date in all_dates]
+  deadlift_values = [deadlift_data[date] for date in all_dates]
+
+  #if value is 0 = none
+
+  print(all_dates)
+  print(squat_values)
+  print(bench_values)
+  print(deadlift_values)
+  
+  return render_template("index.html", form=form, squat_logs=squat_logs, bench_logs=bench_logs, deadlift_logs=deadlift_logs, all_dates=all_dates, squat_values=squat_values, bench_values=bench_values, deadlift_values=deadlift_values)
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -107,6 +147,7 @@ def calculate_e1rm(weight, reps, rpe):
   round_e1rm = round(e1rm, 2)
 
   return round_e1rm
+
 
 if __name__ == '__main__':
   app.run(debug=True)
