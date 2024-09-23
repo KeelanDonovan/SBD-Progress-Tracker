@@ -66,65 +66,61 @@ def logout():
 @app.route("/", methods=['GET', 'POST'])
 @login_required
 def index():
+  #Define form
   form = LogForm()
 
+  #Log workout when form is submitted
   if form.validate_on_submit():
-    log = Log(exercise = form.exercise.data, sets = form.sets.data, reps = form.reps.data, weight = form.weight.data, rpe = form.rpe.data, e1rm = calculate_e1rm(form.weight.data, form.reps.data, form.rpe.data),  user_id = current_user.id)
-
+    log = Log(
+      exercise = form.exercise.data, 
+      sets = form.sets.data, 
+      reps = form.reps.data, 
+      weight = form.weight.data, 
+      rpe = form.rpe.data, 
+      e1rm = calculate_e1rm(form.weight.data, form.reps.data, form.rpe.data),
+      user_id = current_user.id
+      )
     db.session.add(log)
     db.session.commit()
-
     flash('Workout logged successfully', 'success')
     return redirect(url_for('index'))
 
-  squat_logs = Log.query.filter_by(exercise='Squat', user_id=current_user.id).order_by(Log.date_logged.desc()).all()
-  bench_logs = Log.query.filter_by(exercise='Bench Press', user_id=current_user.id).order_by(Log.date_logged.desc()).all()
-  deadlift_logs = Log.query.filter_by(exercise='Deadlift', user_id=current_user.id).order_by(Log.date_logged.desc()).all()
+  #Get all logs for each lift
+  squat_logs = get_exercise_logs('Squat')
+  bench_logs = get_exercise_logs('Bench Press')
+  deadlift_logs = get_exercise_logs('Deadlift')
 
-  #Get data for e1rm chart
-  #Y-axis: Weight, X-axis: Date
-  #Each data point: Date, E1RM, Reps, RPE
+  #Valid logs are logs that have an e1rm value
   valid_squat_logs = [log for log in squat_logs if log.e1rm is not None]
   valid_bench_logs = [log for log in bench_logs if log.e1rm is not None]
   valid_deadlift_logs = [log for log in deadlift_logs if log.e1rm is not None]
 
+  #Create a dictionary with date as key and max e1rm as value
   squat_data = defaultdict(lambda: 0)
   bench_data = defaultdict(lambda: 0)
   deadlift_data = defaultdict(lambda: 0)
 
-  for log in valid_squat_logs:
-    date = log.date_logged.strftime('%m-%d-%Y')
-    if log.e1rm > squat_data[date]:
-        squat_data[date] = log.e1rm
+  #Update the dictionary with the max e1rm value for each date
+  update_lift_data(valid_squat_logs, squat_data)
+  update_lift_data(valid_bench_logs, bench_data)
+  update_lift_data(valid_deadlift_logs, deadlift_data)
 
-  for log in valid_bench_logs:
-    date = log.date_logged.strftime('%m-%d-%Y')
-    if log.e1rm > bench_data[date]:
-        bench_data[date] = log.e1rm
-  
-  for log in valid_deadlift_logs:
-    date = log.date_logged.strftime('%m-%d-%Y')
-    if log.e1rm > deadlift_data[date]:
-        deadlift_data[date] = log.e1rm
-
+  #Get all dates and values for each lift
   all_dates = sorted(set(squat_data.keys()).union(bench_data.keys()).union(deadlift_data.keys()))
-  squat_values = [squat_data[date] for date in all_dates]
+  squat_values = [squat_data[date] for date in all_dates] 
   bench_values = [bench_data[date] for date in all_dates]
   deadlift_values = [deadlift_data[date] for date in all_dates]
-
-  #if value is 0 = none
-
-  print(all_dates)
-  print(squat_values)
-  print(bench_values)
-  print(deadlift_values)
   
   return render_template("index.html", form=form, squat_logs=squat_logs, bench_logs=bench_logs, deadlift_logs=deadlift_logs, all_dates=all_dates, squat_values=squat_values, bench_values=bench_values, deadlift_values=deadlift_values)
 
+#User loader function
 @login_manager.user_loader
 def load_user(user_id):
   return User.query.get(int(user_id))
 
+#Helper functions
+
+#Calculate estimated 1 rep max
 def calculate_e1rm(weight, reps, rpe):
   if rpe < 6.5 or rpe > 10:
     return None
@@ -148,7 +144,18 @@ def calculate_e1rm(weight, reps, rpe):
 
   return round_e1rm
 
+#Get all logs for a specific exercise
+def get_exercise_logs(exercise):
+  return Log.query.filter_by(exercise=exercise).order_by(Log.date_logged.desc()).all()
 
+#Update the dictionary with the max e1rm value for each date (for e1rm chart)
+def update_lift_data(logs, data):
+  for log in logs:
+    date = log.date_logged.strftime('%m-%d-%Y')
+    if log.e1rm > data[date]:
+      data[date] = log.e1rm
+
+#Run the app
 if __name__ == '__main__':
   app.run(debug=True)
 
