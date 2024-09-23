@@ -1,3 +1,6 @@
+# Description: This file contains the main code for the application. It includes the routes for the application, the user loader function, and helper functions.
+
+#Import statements
 from flask import Flask, url_for, render_template, redirect, request, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
@@ -6,50 +9,60 @@ from datetime import datetime
 from models import db, User, Log
 from forms import RegistrationForm, LoginForm, LogForm
 from collections import defaultdict
-import math
 
+#Create the Flask app
 app = Flask(__name__)
+#Set the app configuration
 app.config['SECRET_KEY'] = 'your_secret_key'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 
+#Initialize the database, bcrypt, and login manager
 db.init_app(app)
 bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 login_manager.login_message_category = 'info'
 
-
+#Routes#Create an account route
 @app.route("/create-an-account", methods=['GET', 'POST'])
 def register():
+  #define form
   form = RegistrationForm()
+
+  #Create account when form is submitted
   if form.validate_on_submit():
     existing_user = User.query.filter((User.email == form.email.data) | (User.username == form.username.data)).first()
-
+    #Check if user already exists
     if existing_user:
       flash('An account with that email or username already exists', 'danger')
       return redirect(url_for('register'))
 
+    #Hash the password and create the user
     hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
     user = User(username=form.username.data, email=form.email.data, password=hashed_password)
     
+    #Add user to the database
     db.session.add(user)
-    
     db.session.commit()
     flash('Your account has been created! You can now log in', 'success')
     return redirect(url_for('login'))
   
   return render_template('register.html', title='Create an Account', form=form)
 
+#Login route
 @app.route("/login", methods=['GET', 'POST'])
 def login():
+  #Redirect to index if user is already logged in
   if current_user.is_authenticated:
     return redirect(url_for('index'))
   
+  #Define form
   form = LoginForm()
   
+  #Login user when form is submitted
   if form.validate_on_submit():
+    #Check if user exists and password is correct
     user = User.query.filter_by(email = form.email.data).first()
-    
     if user and bcrypt.check_password_hash(user.password, form.password.data):
       login_user(user, remember = form.remember.data)
       return redirect(url_for('index'))
@@ -58,11 +71,13 @@ def login():
   
   return render_template('login.html', title='Login', form = form)
 
+#Logout route
 @app.route("/logout")
 def logout():
   logout_user()
   return redirect(url_for('index'))
 
+#Index route
 @app.route("/", methods=['GET', 'POST'])
 @login_required
 def index():
@@ -119,7 +134,6 @@ def load_user(user_id):
   return User.query.get(int(user_id))
 
 #Helper functions
-
 #Calculate estimated 1 rep max
 def calculate_e1rm(weight, reps, rpe):
   if rpe < 6.5 or rpe > 10:
@@ -138,6 +152,7 @@ def calculate_e1rm(weight, reps, rpe):
     10: {10.0: 73.9, 9.5: 72.3, 9.0: 70.7, 8.5: 69.4, 8.0: 68.0, 7.5: 66.7, 7.0: 65.3, 6.5: 64.0}
     } #Nested Dictionary, rpe_chart[reps][rpe] = percentage of 1RM
 
+  #Calculate e1rm
   percentage = rpe_chart[reps][rpe]
   e1rm = weight / (percentage / 100.0)
   round_e1rm = round(e1rm, 2)
