@@ -293,6 +293,20 @@ def update_lift_data(logs, data):
         if log.e1rm > data[date]:
             data[date] = log.e1rm
 
+# Route to delete a log            
+@app.route('/delete_log/<int:log_id>', methods=['POST'])
+@login_required
+def delete_log(log_id):
+    log = Log.query.get_or_404(log_id)
+    if log.user_id != current_user.id:  # Ensure user can only delete their own logs
+        flash('You do not have permission to delete this log.', 'danger')
+        return redirect(url_for('index'))
+
+    db.session.delete(log)
+    db.session.commit()
+    flash('Log deleted successfully!', 'success')
+    return redirect(url_for('index'))
+
 
 # Run the app
 if __name__ == "__main__":
