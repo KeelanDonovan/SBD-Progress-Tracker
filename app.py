@@ -291,7 +291,7 @@ def get_exercise_logs(exercise):
 # Update the dictionary with the max e1rm value for each date (for e1rm chart)
 def update_lift_data(logs, data):
     for log in logs:
-        date = log.date_logged.strftime("%m-%d-%Y")
+        date = log.date_logged.strftime("%Y-%m-%d")
         if log.e1rm > data[date]:
             data[date] = log.e1rm
 

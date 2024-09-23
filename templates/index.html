@@ -190,6 +190,7 @@
             var squat_values = {{ squat_values | safe }};
             var bench_values = {{ bench_values | safe }};
             var deadlift_values = {{ deadlift_values | safe }};
+            var all_dates = {{ all_dates | safe }};
             squat_values = squat_values.map(value => value === 0 ? null : value);
             bench_values = bench_values.map(value => value === 0 ? null : value);
             deadlift_values = deadlift_values.map(value => value === 0 ? null : value);
@@ -197,7 +198,7 @@
             var e1rmChart = new Chart(ctx, {
               type: 'line',
               data: {
-                labels: {{ all_dates | safe }},
+                labels: all_dates,
                 datasets:
                 [{
                   label: 'Squat E1RM',
