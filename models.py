@@ -4,7 +4,14 @@ from datetime import datetime
 
 db = SQLAlchemy()
 
-
+# User model
+# The User model has the following columns:
+# id: Integer, primary key
+# username: String, 100 characters, not nullable, unique
+# email: String, 100 characters, not nullable, unique
+# password: String, 100 characters, not nullable
+# date_created: DateTime, not nullable, default is the current time
+# logs: Relationship to the Log model
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), nullable=False, unique=True)
@@ -13,10 +20,18 @@ class User(db.Model, UserMixin):
     date_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     logs = db.relationship("Log", backref="user", lazy=True)
 
-    def __repr__(self):
-        return f"User('{self.username}', '{self.email}', '{self.date_created}')"
 
-
+# Log model
+# The Log model has the following columns:
+# id: Integer, primary key
+# exercise: String, 100 characters, not nullable
+# sets: Integer, not nullable
+# reps: Integer, not nullable
+# weight: Float, not nullable
+# rpe: Float, not nullable
+# e1rm: Float, nullable
+# date_logged: DateTime, not nullable, default is the current time
+# user_id: Integer, foreign key to the User model
 class Log(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     exercise = db.Column(db.String(100), nullable=False)

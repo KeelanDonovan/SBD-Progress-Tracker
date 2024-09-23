@@ -172,97 +172,61 @@
 
             var e1rmChart = new Chart(ctx, {
               type: 'line',
-              data: 
-              {
+              data: {
                 labels: {{ all_dates | safe }},
-                datasets: 
-                [
-                  {
-                    label: 'Squat E1RM',
-                    data: squat_values,
-                    borderColor: 'rgb(255, 99, 132)',
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    tension: 0.1,
-                    pointRadius: 5,
-                    pointHoverRadius: 8,
-                    spanGaps: true,
-                  }, 
-                  {
-                    label: 'Bench Press E1RM',
-                    data: bench_values,
-                    borderColor: 'rgb(54, 162, 235)',
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                    tension: 0.1,
-                    pointRadius: 5,
-                    pointHoverRadius: 8,
-                    spanGaps: true,
-                  }, 
-                  {
-                    label: 'Deadlift E1RM',
-                    data: deadlift_values,
-                    borderColor: 'rgb(75, 192, 192)',
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    tension: 0.1,
-                    pointRadius: 5,
-                    pointHoverRadius: 8,
-                    spanGaps: true,
-                  }
-                ]
+                datasets:
+                [{
+                  label: 'Squat E1RM',
+                  data: squat_values,
+                  borderColor: 'rgb(255, 99, 132)',
+                  backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                  tension: 0.1,
+                  pointRadius: 5,
+                  pointHoverRadius: 8,
+                  spanGaps: true,
+                },{
+                  label: 'Bench Press E1RM',
+                  data: bench_values,
+                  borderColor: 'rgb(54, 162, 235)',
+                  backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                  tension: 0.1,
+                  pointRadius: 5,
+                  pointHoverRadius: 8,
+                  spanGaps: true,
+                },{
+                  label: 'Deadlift E1RM',
+                  data: deadlift_values,
+                  borderColor: 'rgb(75, 192, 192)',
+                  backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                  tension: 0.1,
+                  pointRadius: 5,
+                  pointHoverRadius: 8,
+                  spanGaps: true,
+                }]
               },
-              options: 
-              {
-                scales: 
-                {
-                  y: 
-                  {
+              options: {
+                scales: {
+                  y: {
                     min: 0,
-                    ticks: 
-                    {
+                    ticks: {
                       color: '#45433f',
                     },
-                    grid: 
-                    {
+                    grid: {
                       color: '#555',
                     }
                   },
-                  x: 
-                  {
-                    ticks: 
-                    {
+                  x: {
+                    ticks: {
                       color: '#45433f',
                     },
-                    grid: 
-                    {
+                    grid: {
                       color: '#555',
                     }
                   }
                 },
                 responsive: true,
                 maintainAspectRatio: true,
-                plugins: 
-                {
-                  legend: 
-                  {
-                    labels: 
-                    {
-                      color: '#45433f',
-                      font: 
-                      {
-                        size: 14,
-                      }
-                    }
-                  },
-                },
-                tooltips: 
-                {
-                  backgroundColor: '#f8f8f8',
-                  titleColor: '#45433f',
-                  bodyColor: '#45433f',
-                  cornerRadius: 5,
-                  padding: 10,
-                },
-                animation: 
-                {
+                animation: {
                   duration: 1000,
                   easing: 'easeInOutQuart'
                 },
