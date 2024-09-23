@@ -194,23 +194,23 @@ body {
 .log-workout-form {
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
-  align-items:last baseline;
+  justify-content: space-between;
+  align-items: center;
   width: 100%;
   background-color: #f8f8f8;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   padding: 20px 0;
   margin-bottom: 40px;
-
 }
+
 .log-workout-input-box {
   width:100%;
-  height: 40px;
+  height: 100px;
   margin-bottom: 10px;
   display: flex;
   flex-direction: column;
-  justify-content:space-around;
+  justify-content:center;
   align-items: center;
 }
 .log-workout-form-label {
@@ -228,6 +228,10 @@ body {
   text-align: center;
   width: 80%;
 }
+input[type="date"] {
+  font: inherit;
+  padding-inline-start: inherit;
+}
 .log-workout-submit {
   margin-bottom: 0;
 }
@@ -240,7 +244,11 @@ body {
   color: #f8f8f8;
   font-size: 16px;
   cursor: pointer;
+  margin-top: 18px;
 }
+
+
+
 
 .log-tables-container {
   width: 100%;
@@ -311,6 +319,11 @@ body {
   background-color: #f84b38;
   color: #fff;
 }
+.log-table td:last-child:hover {
+  background-color: #74d6dd;
+  color: #f84b38;
+  
+}
 .e1rm-chart-container {
   width: 100%;
   max-width: 1100px;
@@ -331,4 +344,14 @@ body {
   border-radius: 5px;
   padding: 20px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+.delete-log-button {
+  background-color: #f84b38;
+  color: #f8f8f8;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 20px;
+  cursor: pointer;
+  transition: background-color .3s ease;
+  text-decoration: none;
 }

@@ -9,8 +9,10 @@ from wtforms.fields import (
     IntegerField,
     SelectField,
     FloatField,
+    DateTimeField,
+    DateField
 )
-from wtforms.validators import ValidationError, Email, Length, DataRequired, EqualTo
+from wtforms.validators import ValidationError, Email, Length, DataRequired, EqualTo, Optional
 from models import User
 
 
@@ -37,6 +39,7 @@ class LoginForm(FlaskForm):
 
 # log workout form
 class LogForm(FlaskForm):
+    date = DateField("Date", format="%Y-%m-%d", validators=[Optional()])
     exercise = SelectField(
         "Exercise",
         validators=[DataRequired()],

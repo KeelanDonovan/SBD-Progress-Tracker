@@ -37,6 +37,10 @@
         <form method="POST" class="log-workout-form">
           {{ form.hidden_tag() }}
           <div class="log-workout-input-box">
+            {{form.date.label(class="log-workout-form-label")}}
+            {{ form.date(class="log-workout-form-input", type="date") }}
+          </div>
+          <div class="log-workout-input-box">
             {{form.exercise.label(class="log-workout-form-label")}}
             {{ form.exercise(class="log-workout-form-input select-input") }}
           </div>

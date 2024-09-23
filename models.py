@@ -1,5 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
+from datetime import date
 from datetime import datetime
 
 db = SQLAlchemy()
@@ -40,5 +41,5 @@ class Log(db.Model):
     weight = db.Column(db.Float, nullable=False)
     rpe = db.Column(db.Float, nullable=False)
     e1rm = db.Column(db.Float, nullable=True)
-    date_logged = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    date_logged = db.Column(db.Date, nullable=False, default=date.today())
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)

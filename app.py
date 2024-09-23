@@ -12,7 +12,7 @@ from flask_login import (
     login_required,
     current_user,
 )
-from datetime import datetime
+from datetime import datetime, date
 from models import db, User, Log
 from forms import RegistrationForm, LoginForm, LogForm
 from collections import defaultdict
@@ -100,6 +100,7 @@ def logout():
 def index():
     # Define form
     form = LogForm()
+    print(date.today())
 
     # Log workout when form is submitted
     if form.validate_on_submit():
@@ -110,6 +111,7 @@ def index():
             weight=form.weight.data,
             rpe=form.rpe.data,
             e1rm=calculate_e1rm(form.weight.data, form.reps.data, form.rpe.data),
+            date_logged= form.date.data or date.today(),
             user_id=current_user.id,
         )
         db.session.add(log)
